@@ -28,83 +28,167 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.loLLauncherTab1 = new LoLAutoQueue.LoLLauncherTab();
-            this.loLLauncherTab2 = new LoLAutoQueue.LoLLauncherTab();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.accountList = new System.Windows.Forms.ListBox();
+            this.accountLog = new System.Windows.Forms.RichTextBox();
+            this.startAllButton = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shalzuthgmailcomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gamePanel = new System.Windows.Forms.Panel();
+            this.accountStatus = new System.Windows.Forms.Label();
+            this.stopAllButton = new System.Windows.Forms.Button();
+            this.showLogBox = new System.Windows.Forms.CheckBox();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // accountList
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(579, 343);
-            this.tabControl1.TabIndex = 0;
+            this.accountList.DisplayMember = "status";
+            this.accountList.FormattingEnabled = true;
+            this.accountList.Location = new System.Drawing.Point(12, 27);
+            this.accountList.Name = "accountList";
+            this.accountList.Size = new System.Drawing.Size(244, 433);
+            this.accountList.TabIndex = 0;
+            this.accountList.SelectedIndexChanged += new System.EventHandler(this.accountList_SelectedIndexChanged);
+            this.accountList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.accountList_MouseDown);
             // 
-            // tabPage1
+            // accountLog
             // 
-            this.tabPage1.Controls.Add(this.loLLauncherTab2);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(571, 317);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.accountLog.Location = new System.Drawing.Point(262, 27);
+            this.accountLog.Name = "accountLog";
+            this.accountLog.ReadOnly = true;
+            this.accountLog.Size = new System.Drawing.Size(600, 400);
+            this.accountLog.TabIndex = 1;
+            this.accountLog.Text = "";
+            this.accountLog.WordWrap = false;
             // 
-            // tabPage2
+            // startAllButton
             // 
-            this.tabPage2.Controls.Add(this.loLLauncherTab1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(571, 317);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.startAllButton.Location = new System.Drawing.Point(787, 439);
+            this.startAllButton.Name = "startAllButton";
+            this.startAllButton.Size = new System.Drawing.Size(75, 23);
+            this.startAllButton.TabIndex = 2;
+            this.startAllButton.Text = "Start All";
+            this.startAllButton.UseVisualStyleBackColor = true;
+            this.startAllButton.Click += new System.EventHandler(this.startAllButton_Click);
             // 
-            // loLLauncherTab1
+            // menuStrip1
             // 
-            this.loLLauncherTab1.Location = new System.Drawing.Point(7, 7);
-            this.loLLauncherTab1.Name = "loLLauncherTab1";
-            this.loLLauncherTab1.Size = new System.Drawing.Size(558, 316);
-            this.loLLauncherTab1.TabIndex = 0;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.contactToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(868, 24);
+            this.menuStrip1.TabIndex = 5;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // loLLauncherTab2
+            // fileToolStripMenuItem
             // 
-            this.loLLauncherTab2.Location = new System.Drawing.Point(7, 7);
-            this.loLLauncherTab2.Name = "loLLauncherTab2";
-            this.loLLauncherTab2.Size = new System.Drawing.Size(558, 316);
-            this.loLLauncherTab2.TabIndex = 0;
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadAccountsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // loadAccountsToolStripMenuItem
+            // 
+            this.loadAccountsToolStripMenuItem.Name = "loadAccountsToolStripMenuItem";
+            this.loadAccountsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.loadAccountsToolStripMenuItem.Text = "Load Accounts";
+            this.loadAccountsToolStripMenuItem.Click += new System.EventHandler(this.loadAccountsToolStripMenuItem_Click);
+            // 
+            // contactToolStripMenuItem
+            // 
+            this.contactToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.shalzuthgmailcomToolStripMenuItem});
+            this.contactToolStripMenuItem.Name = "contactToolStripMenuItem";
+            this.contactToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.contactToolStripMenuItem.Text = "Contact";
+            // 
+            // shalzuthgmailcomToolStripMenuItem
+            // 
+            this.shalzuthgmailcomToolStripMenuItem.Name = "shalzuthgmailcomToolStripMenuItem";
+            this.shalzuthgmailcomToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.shalzuthgmailcomToolStripMenuItem.Text = "shalzuth@gmail.com";
+            // 
+            // gamePanel
+            // 
+            this.gamePanel.Location = new System.Drawing.Point(262, 27);
+            this.gamePanel.Name = "gamePanel";
+            this.gamePanel.Size = new System.Drawing.Size(600, 400);
+            this.gamePanel.TabIndex = 6;
+            // 
+            // accountStatus
+            // 
+            this.accountStatus.AutoSize = true;
+            this.accountStatus.Location = new System.Drawing.Point(262, 442);
+            this.accountStatus.Name = "accountStatus";
+            this.accountStatus.Size = new System.Drawing.Size(0, 13);
+            this.accountStatus.TabIndex = 7;
+            // 
+            // stopAllButton
+            // 
+            this.stopAllButton.Location = new System.Drawing.Point(706, 439);
+            this.stopAllButton.Name = "stopAllButton";
+            this.stopAllButton.Size = new System.Drawing.Size(75, 23);
+            this.stopAllButton.TabIndex = 9;
+            this.stopAllButton.Text = "Stop All";
+            this.stopAllButton.UseVisualStyleBackColor = true;
+            this.stopAllButton.Click += new System.EventHandler(this.stopAllButton_Click);
+            // 
+            // showLogBox
+            // 
+            this.showLogBox.AutoSize = true;
+            this.showLogBox.Location = new System.Drawing.Point(626, 442);
+            this.showLogBox.Name = "showLogBox";
+            this.showLogBox.Size = new System.Drawing.Size(74, 17);
+            this.showLogBox.TabIndex = 10;
+            this.showLogBox.Text = "Show Log";
+            this.showLogBox.UseVisualStyleBackColor = true;
+            this.showLogBox.CheckedChanged += new System.EventHandler(this.showLogBox_CheckedChanged);
             // 
             // LoLLauncherHandler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(603, 365);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(868, 470);
+            this.Controls.Add(this.showLogBox);
+            this.Controls.Add(this.stopAllButton);
+            this.Controls.Add(this.accountStatus);
+            this.Controls.Add(this.startAllButton);
+            this.Controls.Add(this.accountList);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.gamePanel);
+            this.Controls.Add(this.accountLog);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "LoLLauncherHandler";
             this.Text = "LoLLauncherHandler";
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoLLauncherHandler_FormClosing);
+            this.Load += new System.EventHandler(this.LoLLauncherHandler_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private LoLLauncherTab loLLauncherTab2;
-        private LoLLauncherTab loLLauncherTab1;
+        private System.Windows.Forms.ListBox accountList;
+        private System.Windows.Forms.RichTextBox accountLog;
+        private System.Windows.Forms.Button startAllButton;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadAccountsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem contactToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shalzuthgmailcomToolStripMenuItem;
+        private System.Windows.Forms.Panel gamePanel;
+        private System.Windows.Forms.Label accountStatus;
+        private System.Windows.Forms.Button stopAllButton;
+        private System.Windows.Forms.CheckBox showLogBox;
+
     }
 }

@@ -55,12 +55,6 @@
     <Compile Include="LoLLauncherHandler.Designer.cs">
       <DependentUpon>LoLLauncherHandler.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoLLauncherTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="LoLLauncherTab.Designer.cs">
-      <DependentUpon>LoLLauncherTab.cs</DependentUpon>
-    </Compile>
     <Compile Include="LoLLauncher\Assets\AsyncHelpers.cs" />
     <Compile Include="LoLLauncher\Assets\StringEnums.cs" />
     <Compile Include="LoLLauncher\RiotObjects\Kudos\Dto\PendingKudosDTO.cs" />
@@ -76,6 +70,7 @@
     <Compile Include="LoLLauncher\RiotObjects\Platform\Catalog\Runes\Rune.cs" />
     <Compile Include="LoLLauncher\RiotObjects\Platform\Catalog\Runes\RuneType.cs" />
     <Compile Include="LoLLauncher\RiotObjects\Platform\Clientfacade\Domain\LoginDataPacket.cs" />
+    <Compile Include="LoLLauncher\RiotObjects\Platform\Gameinvite\Contract\LobbyStatus.cs" />
     <Compile Include="LoLLauncher\RiotObjects\Platform\Game\BannedChampion.cs" />
     <Compile Include="LoLLauncher\RiotObjects\Platform\Game\BotParticipant.cs" />
     <Compile Include="LoLLauncher\RiotObjects\Platform\Game\ChampionBanInfoDTO.cs" />
@@ -176,16 +171,22 @@
     <Compile Include="LoLLauncher\RTMP\TypedObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LoLLauncherHandler.resx">
       <DependentUpon>LoLLauncherHandler.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoLLauncherTab.resx">
-      <DependentUpon>LoLLauncherTab.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

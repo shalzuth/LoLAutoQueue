@@ -56,10 +56,10 @@ namespace LoLLauncher
         private List<int> pendingInvokes = new List<int>();
         private Dictionary<int, TypedObject> results = new Dictionary<int, TypedObject>();
         private Dictionary<int, RiotGamesObject> callbacks = new Dictionary<int, RiotGamesObject>();
-        private Thread decodeThread;
+        public Thread decodeThread;
 
         private int heartbeatCount = 1;
-        private Thread heartbeatThread;
+        public Thread heartbeatThread;
         private Object isInvokingLock = new Object();
 
         #endregion
@@ -529,31 +529,39 @@ namespace LoLLauncher
             TypedObject result, body;
 
             // Login 1
-            body = new TypedObject("com.riotgames.platform.login.AuthenticationCredentials");
-            body.Add("password", password);
-            body.Add("clientVersion", clientVersion);
-            body.Add("ipAddress", ipAddress);
-            body.Add("securityAnswer", null);
-            body.Add("locale", locale);
-            body.Add("domain", "lolclient.lol.riotgames.com");
+            RiotObjects.Platform.Login.AuthenticationCredentials cred = new RiotObjects.Platform.Login.AuthenticationCredentials();
+            cred.Password = password;
+            cred.ClientVersion = clientVersion;
+            cred.IpAddress = ipAddress;
+            cred.SecurityAnswer = null;
+            cred.Locale = locale;
+            cred.Domain = "lolclient.lol.riotgames.com";
+            cred.OldPassword = null;
+            cred.AuthToken = authToken;
 
-            body.Add("oldPassword", null);
-            body.Add("authToken", authToken);
             if (useGarena)
             {
-                body.Add("partnerCredentials", "8393 " + garenaToken);
-                body.Add("username", userID);
+                cred.PartnerCredentials = "8393 " + garenaToken;
+                cred.Username = userID;
             }
             else
             {
-                body.Add("partnerCredentials", null);
-                body.Add("username", user);
+                cred.PartnerCredentials = null;
+                cred.Username = user;
             }
-            int id = Invoke("loginService", "login", new object[] { body });
+            int id = Invoke("loginService", "login", new object[] { cred.GetBaseTypedObject() });
 
             result = GetResult(id);
             if (result["result"].Equals("_error"))
             {
+                string newVersion = (string)result.GetTO("data").GetTO("rootCause").GetArray("substitutionArguments")[1];
+                if (newVersion != LoLAutoQueue.Properties.Settings.Default.clientVer)
+                {
+                    LoLAutoQueue.Properties.Settings.Default.clientVer = newVersion;
+                    LoLAutoQueue.Properties.Settings.Default.Save();
+                    clientVersion = newVersion;
+                    return Login();
+                }
                 Error(GetErrorMessage(result), ErrorType.Login);
                 Disconnect();
                 return false;

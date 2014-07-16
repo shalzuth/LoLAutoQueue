@@ -140,7 +140,7 @@ namespace LoLLauncher
     /// Queue types Enumeartor.
     /// </summary>
     /// 
-    public class QueueTypes
+    public class QueueTypes2
     {
         public Dictionary<String, Int32> dict = new Dictionary<String, Int32>()
         {
@@ -157,6 +157,12 @@ namespace LoLLauncher
             {"BOT_TT-3x3", 52},
             {"ARAM-5x5", 65}
         };
+    }
+    public enum QueueTypes
+    {
+        BOT = 7,
+        ARAM = 65,
+        CUSTOM = 999
     }
 
     public enum AllowSpectators

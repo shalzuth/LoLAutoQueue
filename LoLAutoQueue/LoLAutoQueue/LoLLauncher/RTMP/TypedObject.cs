@@ -96,7 +96,15 @@ namespace LoLLauncher
                 return sb.ToString();
             }
             else
-                return type + ":" + base.ToString();
+            {
+                string val = "";
+                foreach (KeyValuePair<string, object> entry in this)
+                {
+                    val += entry.Key + " : " + entry.Value + "\n";
+                    // do something with entry.Value or entry.Key
+                }
+                return val + type + ":" + base.ToString();
+            }
         }
     }
 }
