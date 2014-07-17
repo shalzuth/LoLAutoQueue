@@ -160,7 +160,9 @@ namespace LoLLauncher
     }
     public enum QueueTypes
     {
-        BOT = 7,
+        INTRO_BOT = 31,
+        BEGINNER_BOT = 32,
+        MEDIUM_BOT = 33,
         ARAM = 65,
         CUSTOM = 999
     }

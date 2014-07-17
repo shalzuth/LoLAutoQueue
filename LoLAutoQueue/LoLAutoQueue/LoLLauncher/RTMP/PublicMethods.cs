@@ -246,6 +246,17 @@ namespace LoLLauncher
             return result;
         }
 
+        public async Task<AllSummonerData> CreateDefaultSummoner(String summonerName)
+        {
+            int Id = Invoke("summonerService", "createDefaultSummoner", new object[] { summonerName });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            AllSummonerData result = new AllSummonerData(messageBody);
+            results.Remove(Id);
+            return result;
+        }
+
 
         /// 11.)
         public async Task<String[]> GetSummonerNames(Double[] summonerIds)

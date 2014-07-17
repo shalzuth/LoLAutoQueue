@@ -122,11 +122,13 @@ namespace LoLAutoQueue
                         }
                         break;
                     case "CHAMP_SELECT":
+                        firstTimeInCustom = true;
+                        firstTimeInQueuePop = true;
                         if (firstTimeInLobby)
                         {
                             updateStatus("Champion Select - Waiting for game to start");
                             await connection.SetClientReceivedGameMessage(game.Id, "CHAMP_SELECT_CLIENT");
-                            if (queueType == QueueTypes.BOT || queueType == QueueTypes.CUSTOM)
+                            if (queueType != QueueTypes.ARAM)
                             {
                                 await connection.SelectChampion(availableChampsArray[0].ChampionId);
                                 await connection.ChampionSelectCompleted();
@@ -211,15 +213,38 @@ namespace LoLAutoQueue
             {
                 if (queueType == QueueTypes.CUSTOM)
                 {
-
+                    updateStatus("Creating custom game");
+                    LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig cfg = new LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig();
+                    cfg.GameName = "funtime lol" + new Random().Next().ToString();
+                    LoLLauncher.RiotObjects.Platform.Game.Map.GameMap map = new LoLLauncher.RiotObjects.Platform.Game.Map.GameMap();
+                    map.Description = "desc";
+                    map.DisplayName = "dummy";
+                    map.TotalPlayers = 10;
+                    map.Name = "dummy";
+                    map.MapId = (int)GameMode.SummonersRift;
+                    map.MinCustomPlayers = 1;
+                    cfg.GameMap = map;
+                    cfg.MaxNumPlayers = 10;
+                    cfg.GameTypeConfig = 1;
+                    cfg.AllowSpectators = "NONE";
+                    cfg.GameMode = StringEnum.GetStringValue(GameMode.SummonersRift);
+                    await connection.CreatePracticeGame(cfg);
                 }
                 else
                 {
                     updateStatus("Joining Queue");
                     LoLLauncher.RiotObjects.Platform.Matchmaking.MatchMakerParams matchParams = new LoLLauncher.RiotObjects.Platform.Matchmaking.MatchMakerParams();
-                    if (queueType == QueueTypes.BOT)
+                    if (queueType == QueueTypes.INTRO_BOT)
+                    {
+                        matchParams.BotDifficulty = "INTRO";
+                    }
+                    else if (queueType == QueueTypes.BEGINNER_BOT)
                     {
                         matchParams.BotDifficulty = "EASY";
+                    }
+                    else if (queueType == QueueTypes.MEDIUM_BOT)
+                    {
+                        matchParams.BotDifficulty = "MEDIUM";
                     }
                     matchParams.QueueIds = new Int32[1] { (int)queueType };
                     LoLLauncher.RiotObjects.Platform.Matchmaking.SearchingForMatchNotification m = await connection.AttachToQueue(matchParams);
@@ -255,7 +280,7 @@ namespace LoLAutoQueue
             {
                 RegisterNotifications();
                 loginPacket = await connection.GetLoginDataPacketForUser();
-                updateStatus("Logged in on " + loginPacket.AllSummonerData.Summoner.Name);
+                //
                 /*FileSystemWatcher watcher = new FileSystemWatcher();
                 watcher.Path = @"..\Common\";
                 watcher.Filter = "summoner_" + loginPacket.AllSummonerData.Summoner.Name + "_finished.txt";
@@ -265,10 +290,16 @@ namespace LoLAutoQueue
                          NotifyFilters.DirectoryName;
                 watcher.Created += watcher_Created;
                 watcher.EnableRaisingEvents = true;*/
+                if (loginPacket.AllSummonerData == null)
+                {
+                    LoLLauncher.RiotObjects.Platform.Summoner.AllSummonerData sumData = await connection.CreateDefaultSummoner(username);
+                    loginPacket.AllSummonerData = sumData;
+                }
+                updateStatus("Logged in on " + loginPacket.AllSummonerData.Summoner.Name);
                 updateStatus("Starting at lvl " + loginPacket.AllSummonerData.SummonerLevel.Level);
                 updateStatus("Starting with " + loginPacket.IpBalance + "ip");
                 LoLLauncher.RiotObjects.Platform.Matchmaking.GameQueueConfig[] availableQueues = await connection.GetAvailableQueues();
-                LoLLauncher.RiotObjects.Platform.Summoner.Boost.SummonerActiveBoostsDTO boosts = await connection.GetSumonerActiveBoosts();
+                //LoLLauncher.RiotObjects.Platform.Summoner.Boost.SummonerActiveBoostsDTO boosts = await connection.GetSumonerActiveBoosts();
                 //LoLLauncher.RiotObjects.Platform.Leagues.Client.Dto.SummonerLeagueItemAndProgresssDTO leaguePosProg = await connection.GetMyLeaguePositionsAndProgress();
                 availableChampsArray = await connection.GetAvailableChampions();
                 LoLLauncher.RiotObjects.Platform.Summoner.Runes.SummonerRuneInventory sumRuneInven = await connection.GetSummonerRuneInventory(loginPacket.AllSummonerData.Summoner.SumId);
