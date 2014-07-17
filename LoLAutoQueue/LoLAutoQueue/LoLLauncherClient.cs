@@ -45,12 +45,13 @@ namespace LoLAutoQueue
         #region Constructor
         #endregion
         #region GUI Functions
-        public LoLLauncherClient(String username, String pwd, LoLLauncher.Region region, QueueTypes queuetype, IntPtr panelhnd, String installExe)
+        public LoLLauncherClient(String username, String pwd, LoLLauncher.Region reg, QueueTypes queuetype, IntPtr panelhnd, String installExe)
         {
             panelHandle = panelhnd;
             userName = username;
             password = pwd;
             queueType = queuetype;
+            region = reg;
             connection.OnConnect += connection_OnConnect;
             connection.OnDisconnect += connection_OnDisconnect;
             connection.OnError += connection_OnError;
