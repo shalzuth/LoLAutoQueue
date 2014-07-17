@@ -217,22 +217,25 @@ namespace LoLAutoQueue
                 String[] filelines = File.ReadAllLines(fileName);
                 foreach (String line in filelines)
                 {
-                    LoLLauncher.Region reg = (LoLLauncher.Region)Enum.Parse(typeof(LoLLauncher.Region), line.Split(' ')[2]);
-                    LoLLauncher.QueueTypes q = (LoLLauncher.QueueTypes)Enum.Parse(typeof(LoLLauncher.QueueTypes), line.Split(' ')[3]);
-                    Panel tempPanel = new Panel();
-                    if (!panels.ContainsKey(line.Split(' ')[0]))
+                    if (line.Split(' ').Count() > 3)
                     {
-                        tempPanel.BackColor = Color.Black;
-                        tempPanel.Size = gamePanel.Size;
-                        tempPanel.Anchor = gamePanel.Anchor;
-                        panels.Add(line.Split(' ')[0], tempPanel);
+                        LoLLauncher.Region reg = (LoLLauncher.Region)Enum.Parse(typeof(LoLLauncher.Region), line.Split(' ')[2]);
+                        LoLLauncher.QueueTypes q = (LoLLauncher.QueueTypes)Enum.Parse(typeof(LoLLauncher.QueueTypes), line.Split(' ')[3]);
+                        Panel tempPanel = new Panel();
+                        if (!panels.ContainsKey(line.Split(' ')[0]))
+                        {
+                            tempPanel.BackColor = Color.Black;
+                            tempPanel.Size = gamePanel.Size;
+                            tempPanel.Anchor = gamePanel.Anchor;
+                            panels.Add(line.Split(' ')[0], tempPanel);
+                        }
+                        else
+                        {
+                            tempPanel = panels[line.Split(' ')[0]];
+                        }
+                        LoLLauncherClient acct = new LoLLauncherClient(line.Split(' ')[0], line.Split(' ')[1], reg, q, tempPanel.Handle, FindLoLExe());
+                        accountList.Items.Add(acct);
                     }
-                    else
-                    {
-                        tempPanel = panels[line.Split(' ')[0]];
-                    }
-                    LoLLauncherClient acct = new LoLLauncherClient(line.Split(' ')[0], line.Split(' ')[1], reg, q, tempPanel.Handle, FindLoLExe());
-                    accountList.Items.Add(acct);
                 }
             }
             catch (Exception ex)
