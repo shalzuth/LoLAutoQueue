@@ -18,3 +18,4 @@ Queues supported - BOT, ARAM, CUSTOM
 
 I would recommend trying out on Custom first to make sure you have settings correct. And to see if this program even works.
 
+Credit goes to raler for the RTMP connection API.
