@@ -16,7 +16,7 @@ accountName2 accountPassword region queueType
 
 Regions supported - https://github.com/shalzuth/LoLAutoQueue/blob/master/LoLAutoQueue/LoLAutoQueue/LoLLauncher/RTMP/Region.cs
 
-Queues supported - BOT, ARAM, CUSTOM
+Queues supported - INTRO_BOT, BEGINNER_BOT, MEDIUM_BOT, ARAM, CUSTOM
 
 I would recommend trying out on Custom first to make sure you have settings correct. And to see if this program even works.
 
