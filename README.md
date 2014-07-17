@@ -4,6 +4,8 @@ LoLAutoQueue
 Auto queues up for LoL
 This isn't ready 100% yet.
 
+Latest compiled release: https://github.com/shalzuth/LoLAutoQueue/releases/download/v0.1-alpha/LoLAutoQueue.exe
+
 Create acc.txt in the same folder as LoLAutoQueue.exe, format it as such:
 
 accountName1 accountPassword region queueType
