@@ -7,7 +7,10 @@ This isn't ready 100% yet.
 Create acc.txt in the same folder as LoLAutoQueue.exe, format it as such:
 
 accountName1 accountPassword region queueType
+
 accountName2 accountPassword region queueType
+
+
 
 Regions supported - https://github.com/shalzuth/LoLAutoQueue/blob/master/LoLAutoQueue/LoLAutoQueue/LoLLauncher/RTMP/Region.cs
 
