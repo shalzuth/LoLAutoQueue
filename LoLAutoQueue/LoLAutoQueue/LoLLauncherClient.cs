@@ -154,8 +154,30 @@ namespace LoLAutoQueue
                     case "POST_GAME":
                         break;
                     case "TERMINATED":
-                        updateStatus("Re-entering queue due to someone dodging");
-                        firstTimeInQueuePop = true;
+                        if (queueType == QueueTypes.CUSTOM)
+                        {
+                            updateStatus("Creating custom game");
+                            LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig cfg = new LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig();
+                            cfg.GameName = "funtime lol" + new Random().Next().ToString();
+                            LoLLauncher.RiotObjects.Platform.Game.Map.GameMap map = new LoLLauncher.RiotObjects.Platform.Game.Map.GameMap();
+                            map.Description = "desc";
+                            map.DisplayName = "dummy";
+                            map.TotalPlayers = 10;
+                            map.Name = "dummy";
+                            map.MapId = (int)GameMode.SummonersRift;
+                            map.MinCustomPlayers = 1;
+                            cfg.GameMap = map;
+                            cfg.MaxNumPlayers = 10;
+                            cfg.GameTypeConfig = 1;
+                            cfg.AllowSpectators = "NONE";
+                            cfg.GameMode = StringEnum.GetStringValue(GameMode.SummonersRift);
+                            await connection.CreatePracticeGame(cfg);
+                        }
+                        else
+                        {
+                            updateStatus("Re-entering queue due to someone dodging");
+                            firstTimeInQueuePop = true;
+                        }
                         break;
                     case "TERMINATED_IN_ERROR":
                         break;
