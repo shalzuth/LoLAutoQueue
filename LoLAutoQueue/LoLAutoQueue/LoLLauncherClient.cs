@@ -61,6 +61,28 @@ namespace LoLAutoQueue
             installPath = installExe;
             updateStatus("Init");
         }
+        public LoLLauncherClient(IntPtr panelhnd, String installExe)
+        {
+            panelHandle = panelhnd;
+            installPath = installExe;
+        }
+        public LoLLauncherClient()
+        {
+        }
+        public void Init(String username, String pwd, LoLLauncher.Region reg, QueueTypes queuetype)
+        {
+            userName = username;
+            password = pwd;
+            queueType = queuetype;
+            region = reg;
+            connection.OnConnect += connection_OnConnect;
+            connection.OnDisconnect += connection_OnDisconnect;
+            connection.OnError += connection_OnError;
+            connection.OnLogin += connection_OnLogin;
+            connection.OnLoginQueueUpdate += connection_OnLoginQueueUpdate;
+            connection.OnMessageReceived += connection_OnMessageReceived;
+            updateStatus("Init");
+        }
         #endregion
         #region Events
         async void RegisterNotifications()

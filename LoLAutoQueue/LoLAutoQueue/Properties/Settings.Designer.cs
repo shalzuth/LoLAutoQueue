@@ -25,7 +25,7 @@ namespace LoLAutoQueue.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4.11.foobar")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4.12.foobar")]
         public string clientVer {
             get {
                 return ((string)(this["clientVer"]));

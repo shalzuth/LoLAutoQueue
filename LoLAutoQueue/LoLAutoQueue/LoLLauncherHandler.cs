@@ -25,6 +25,7 @@ namespace LoLAutoQueue
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
         public static extern IntPtr GetParent(IntPtr hWnd);
         private MenuItem[] menuItems;
+        private MenuItem[] menuItemsNone;
         private Dictionary<String, Panel> panels = new Dictionary<String, Panel>();
         public LoLLauncherHandler()
         {
@@ -39,12 +40,96 @@ namespace LoLAutoQueue
             {
                 LoadFile("acc.txt");
             }
+            SetupMenuItems();
+            BeginWork();
+        }
+        private void SetupMenuItems()
+        {
             MenuItem restart = new MenuItem("Restart");
             MenuItem stop = new MenuItem("Stop");
-            restart.Click += restart_Click;
-            stop.Click += stop_Click;
-            menuItems = new MenuItem[]{restart, stop};
-            BeginWork();
+            MenuItem delete = new MenuItem("Delete");
+            restart.Click += ((object sender2, EventArgs e2) =>
+            {
+                ((LoLLauncherClient)accountList.SelectedItem).Disconnect();
+                ((LoLLauncherClient)accountList.SelectedItem).Connect();
+            });
+            stop.Click += ((object sender2, EventArgs e2) =>
+            {
+                ((LoLLauncherClient)accountList.SelectedItem).Disconnect();
+            });
+            delete.Click += ((object sender2, EventArgs e2) =>
+            {
+                accountList.Items.Remove(accountList.SelectedItem);
+            });
+            MenuItem add = new MenuItem("Add");
+            add.Click += ((object sender2, EventArgs e2) =>
+            {
+                LoLLauncherClient client = new LoLLauncherClient();
+                if (AddAccountForm(ref client) == DialogResult.OK)
+                {
+                    Panel tempPanel = new Panel();
+                    if (!panels.ContainsKey(client.userName))
+                    {
+                        tempPanel.BackColor = Color.Black;
+                        tempPanel.Size = gamePanel.Size;
+                        tempPanel.Anchor = gamePanel.Anchor;
+                        panels.Add(client.userName, tempPanel);
+                        client.panelHandle = tempPanel.Handle;
+                    }
+                    client.installPath = FindLoLExe();
+                    accountList.Items.Add(client);
+                }
+            });
+            menuItems = new MenuItem[] { restart, stop, delete };
+            menuItemsNone = new MenuItem[] { add };
+        }
+        private static DialogResult AddAccountForm(ref LoLLauncherClient client)
+        {
+            Form form = new Form();
+            TextBox user = new TextBox();
+            TextBox pw = new TextBox();
+            ComboBox region = new ComboBox();
+            ComboBox queue = new ComboBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+            user.Text = "Username";
+            pw.Text = "Password";
+            region.Text = "Region";
+            region.Items.AddRange(Enum.GetNames(typeof(LoLLauncher.Region)));
+            queue.Text = "Queue";
+            queue.Items.AddRange(Enum.GetNames(typeof(LoLLauncher.QueueTypes)));
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            user.SetBounds(10, 10, 100, 23);
+            pw.SetBounds(120, 10, 100, 23);
+            region.SetBounds(10, 43, 100, 23);
+            queue.SetBounds(120, 43, 100, 23);
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.ClientSize = new Size(396, 107);
+            form.Controls.AddRange(new Control[] { user, pw, region, queue, buttonOk, buttonCancel });
+            form.ClientSize = new Size(Math.Max(300, user.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                client.Init(user.Text, pw.Text, (LoLLauncher.Region)Enum.Parse(typeof(LoLLauncher.Region), region.SelectedItem.ToString()),
+                    (LoLLauncher.QueueTypes)Enum.Parse(typeof(LoLLauncher.QueueTypes), queue.SelectedItem.ToString()));
+            }
+            return dialogResult;
         }
         private void CheckForUpdate()
         {
@@ -62,7 +147,6 @@ namespace LoLAutoQueue
         }
         private String FindLoLBase()
         {
-
             String regPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
             foreach (var item in Microsoft.Win32.Registry.LocalMachine.OpenSubKey(regPath).GetSubKeyNames())
             {
@@ -116,43 +200,21 @@ namespace LoLAutoQueue
             cfgContents = regex.Replace(cfgContents, "\nWidth=600");
             File.WriteAllText(cfgFile, cfgContents);
         }
-        void restart_Click(object sender, EventArgs e)
-        {
-            LoLLauncherClient client = (LoLLauncherClient)accountList.SelectedItem;
-            client.Disconnect();
-            client.Connect();
-        }
-        void stop_Click(object sender, EventArgs e)
-        {
-            LoLLauncherClient client = (LoLLauncherClient)accountList.SelectedItem;
-            client.Disconnect();
-        }
 
         private async void BeginWork()
         {
             while (true)
             {
                 await Wait();
-                List<LoLLauncherClient> clients = new List<LoLLauncherClient>();
-                int oldIndex = accountList.SelectedIndex;
-                foreach (object acc in accountList.Items)
-                {
-                    LoLLauncherClient account = (LoLLauncherClient)acc;
-                    clients.Add(account);
-                }
-                accountList.Items.Clear();
-                foreach (LoLLauncherClient client in clients)
-                {
-                    accountList.Items.Add(client);
-                }
-                accountList.SelectedIndex = oldIndex;
-
+                String temp = accountList.DisplayMember;
+                accountList.DisplayMember = null;
+                accountList.DisplayMember = temp;
             }
         }
 
         private async Task Wait()
         {
-            await Task.Delay(300);
+            await Task.Delay(1000);
         }
 
         private void LoLLauncherHandler_FormClosing(object sender, FormClosingEventArgs e)
@@ -223,8 +285,16 @@ namespace LoLAutoQueue
             accountList.SelectedIndex = accountList.IndexFromPoint(e.X, e.Y);
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                ContextMenu buttonMenu = new ContextMenu(menuItems);
-                buttonMenu.Show(accountList, e.Location);
+                if (accountList.SelectedIndex >= 0)
+                {
+                    ContextMenu buttonMenu = new ContextMenu(menuItems);
+                    buttonMenu.Show(accountList, e.Location);
+                }
+                else
+                {
+                    ContextMenu buttonMenu = new ContextMenu(menuItemsNone);
+                    buttonMenu.Show(accountList, e.Location);
+                }
             }
         }
         private void LoadFile(String fileName)

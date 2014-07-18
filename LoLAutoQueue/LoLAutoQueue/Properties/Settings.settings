@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="clientVer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">4.11.foobar</Value>
+      <Value Profile="(Default)">4.12.foobar</Value>
     </Setting>
   </Settings>
 </SettingsFile>
