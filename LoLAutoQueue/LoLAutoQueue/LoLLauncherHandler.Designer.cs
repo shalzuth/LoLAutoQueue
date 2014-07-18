@@ -40,9 +40,7 @@
             this.accountStatus = new System.Windows.Forms.Label();
             this.stopAllButton = new System.Windows.Forms.Button();
             this.showLogBox = new System.Windows.Forms.CheckBox();
-            this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.versionnumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getLatestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.githubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,8 +79,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.contactToolStripMenuItem,
-            this.versionToolStripMenuItem});
+            this.contactToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(868, 24);
@@ -107,7 +104,8 @@
             // contactToolStripMenuItem
             // 
             this.contactToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.shalzuthgmailcomToolStripMenuItem});
+            this.shalzuthgmailcomToolStripMenuItem,
+            this.githubToolStripMenuItem});
             this.contactToolStripMenuItem.Name = "contactToolStripMenuItem";
             this.contactToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.contactToolStripMenuItem.Text = "Contact";
@@ -154,26 +152,12 @@
             this.showLogBox.UseVisualStyleBackColor = true;
             this.showLogBox.CheckedChanged += new System.EventHandler(this.showLogBox_CheckedChanged);
             // 
-            // versionToolStripMenuItem
+            // githubToolStripMenuItem
             // 
-            this.versionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.versionnumToolStripMenuItem,
-            this.getLatestToolStripMenuItem});
-            this.versionToolStripMenuItem.Name = "versionToolStripMenuItem";
-            this.versionToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
-            this.versionToolStripMenuItem.Text = "Version";
-            // 
-            // versionnumToolStripMenuItem
-            // 
-            this.versionnumToolStripMenuItem.Name = "versionnumToolStripMenuItem";
-            this.versionnumToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.versionnumToolStripMenuItem.Text = "versionnum";
-            // 
-            // getLatestToolStripMenuItem
-            // 
-            this.getLatestToolStripMenuItem.Name = "getLatestToolStripMenuItem";
-            this.getLatestToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.getLatestToolStripMenuItem.Text = "Get Latest";
+            this.githubToolStripMenuItem.Name = "githubToolStripMenuItem";
+            this.githubToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.githubToolStripMenuItem.Text = "Github";
+            this.githubToolStripMenuItem.Click += new System.EventHandler(this.githubToolStripMenuItem_Click);
             // 
             // LoLLauncherHandler
             // 
@@ -214,9 +198,7 @@
         private System.Windows.Forms.Label accountStatus;
         private System.Windows.Forms.Button stopAllButton;
         private System.Windows.Forms.CheckBox showLogBox;
-        private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem versionnumToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem getLatestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem githubToolStripMenuItem;
 
     }
 }

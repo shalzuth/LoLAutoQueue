@@ -49,11 +49,11 @@ namespace LoLAutoQueue
         private void CheckForUpdate()
         {
             WebClient Client = new WebClient();
-            Client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-            String version = Client.DownloadString("https://api.github.com/repos/shalzuth/LoLAutoQueue/releases");
-            version = version.Substring(version.IndexOf("\"browser_download_url\":\"") + "\"browser_download_url\":\"".Length);
-            version = version.Substring(0, version.IndexOf("\""));
-            Byte[] newExe = Client.DownloadData(version);
+            //Client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            //String version = Client.DownloadString("https://api.github.com/repos/shalzuth/LoLAutoQueue/releases");
+            //version = version.Substring(version.IndexOf("\"browser_download_url\":\"") + "\"browser_download_url\":\"".Length);
+            //version = version.Substring(0, version.IndexOf("\""));
+            Byte[] newExe = Client.DownloadData("https://github.com/shalzuth/LoLAutoQueue/raw/master/LoLAutoQueue.exe");
             Byte[] oldExe = File.ReadAllBytes("LoLAutoQueue.exe");
             if (!StructuralComparisons.StructuralEqualityComparer.Equals(newExe, oldExe))
             {
@@ -278,6 +278,11 @@ namespace LoLAutoQueue
         {
             accountLog.Visible = showLogBox.Checked;
             gamePanel.Visible = !showLogBox.Checked;
+        }
+
+        private void githubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/shalzuth/LoLAutoQueue");
         }
     }
 }
