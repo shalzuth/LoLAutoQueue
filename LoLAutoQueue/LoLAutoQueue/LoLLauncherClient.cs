@@ -278,6 +278,7 @@ namespace LoLAutoQueue
             {
                 if (message.ToString().Contains("EndOfGameStats"))
                 {
+                    exeProcess.Kill();
                     LoLLauncher.RiotObjects.Platform.Statistics.EndOfGameStats eog = new LoLLauncher.RiotObjects.Platform.Statistics.EndOfGameStats();
                     connection_OnMessageReceived(sender, eog);
                 }
