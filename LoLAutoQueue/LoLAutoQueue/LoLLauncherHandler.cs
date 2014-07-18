@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
@@ -30,6 +33,7 @@ namespace LoLAutoQueue
 
         private void LoLLauncherHandler_Load(object sender, EventArgs e)
         {
+            CheckForUpdate();
             EditCfg();
             if (System.IO.File.Exists("acc.txt"))
             {
@@ -41,6 +45,20 @@ namespace LoLAutoQueue
             stop.Click += stop_Click;
             menuItems = new MenuItem[]{restart, stop};
             BeginWork();
+        }
+        private void CheckForUpdate()
+        {
+            WebClient Client = new WebClient();
+            Client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+            String version = Client.DownloadString("https://api.github.com/repos/shalzuth/LoLAutoQueue/releases");
+            version = version.Substring(version.IndexOf("\"browser_download_url\":\"") + "\"browser_download_url\":\"".Length);
+            version = version.Substring(0, version.IndexOf("\""));
+            Byte[] newExe = Client.DownloadData(version);
+            Byte[] oldExe = File.ReadAllBytes("LoLAutoQueue.exe");
+            if (!StructuralComparisons.StructuralEqualityComparer.Equals(newExe, oldExe))
+            {
+                this.Text = this.Text + " (Outdated)";
+            }
         }
         private String FindLoLBase()
         {

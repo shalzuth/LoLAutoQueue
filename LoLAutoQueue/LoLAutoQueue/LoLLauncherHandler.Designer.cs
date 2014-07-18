@@ -40,6 +40,9 @@
             this.accountStatus = new System.Windows.Forms.Label();
             this.stopAllButton = new System.Windows.Forms.Button();
             this.showLogBox = new System.Windows.Forms.CheckBox();
+            this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versionnumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getLatestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,7 +81,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.contactToolStripMenuItem});
+            this.contactToolStripMenuItem,
+            this.versionToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(868, 24);
@@ -150,6 +154,27 @@
             this.showLogBox.UseVisualStyleBackColor = true;
             this.showLogBox.CheckedChanged += new System.EventHandler(this.showLogBox_CheckedChanged);
             // 
+            // versionToolStripMenuItem
+            // 
+            this.versionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.versionnumToolStripMenuItem,
+            this.getLatestToolStripMenuItem});
+            this.versionToolStripMenuItem.Name = "versionToolStripMenuItem";
+            this.versionToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.versionToolStripMenuItem.Text = "Version";
+            // 
+            // versionnumToolStripMenuItem
+            // 
+            this.versionnumToolStripMenuItem.Name = "versionnumToolStripMenuItem";
+            this.versionnumToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.versionnumToolStripMenuItem.Text = "versionnum";
+            // 
+            // getLatestToolStripMenuItem
+            // 
+            this.getLatestToolStripMenuItem.Name = "getLatestToolStripMenuItem";
+            this.getLatestToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.getLatestToolStripMenuItem.Text = "Get Latest";
+            // 
             // LoLLauncherHandler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -165,7 +190,7 @@
             this.Controls.Add(this.accountLog);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "LoLLauncherHandler";
-            this.Text = "LoLLauncherHandler";
+            this.Text = "Autobots, Roll Out!";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoLLauncherHandler_FormClosing);
             this.Load += new System.EventHandler(this.LoLLauncherHandler_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -189,6 +214,9 @@
         private System.Windows.Forms.Label accountStatus;
         private System.Windows.Forms.Button stopAllButton;
         private System.Windows.Forms.CheckBox showLogBox;
+        private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem versionnumToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getLatestToolStripMenuItem;
 
     }
 }
