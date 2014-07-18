@@ -213,3 +213,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+LoLAutoQueue.exe.config
+LoLAutoQueue.vshost.exe
+LoLAutoQueue.vshost.exe.config
+LoLAutoQueue.vshost.exe.manifest
