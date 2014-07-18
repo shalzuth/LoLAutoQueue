@@ -59,7 +59,7 @@ namespace LoLAutoQueue
             connection.OnLoginQueueUpdate += connection_OnLoginQueueUpdate;
             connection.OnMessageReceived += connection_OnMessageReceived;
             installPath = installExe;
-            updateStatus(": Init");
+            updateStatus("Init");
         }
         #endregion
         #region Events
@@ -127,14 +127,14 @@ namespace LoLAutoQueue
                         firstTimeInQueuePop = true;
                         if (firstTimeInLobby)
                         {
+                            firstTimeInLobby = false;
                             updateStatus("Champion Select - Waiting for game to start");
                             await connection.SetClientReceivedGameMessage(game.Id, "CHAMP_SELECT_CLIENT");
                             if (queueType != QueueTypes.ARAM)
                             {
-                                await connection.SelectChampion(availableChampsArray[0].ChampionId);
+                                await connection.SelectChampion(availableChampsArray.First(champ => champ.Owned || champ.FreeToPlay).ChampionId);
                                 await connection.ChampionSelectCompleted();
                             }
-                            firstTimeInLobby = false;
                         }
                         break;
                     case "POST_CHAMP_SELECT":
@@ -236,22 +236,7 @@ namespace LoLAutoQueue
             {
                 if (queueType == QueueTypes.CUSTOM)
                 {
-                    updateStatus("Creating custom game");
-                    LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig cfg = new LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig();
-                    cfg.GameName = "funtime lol" + new Random().Next().ToString();
-                    LoLLauncher.RiotObjects.Platform.Game.Map.GameMap map = new LoLLauncher.RiotObjects.Platform.Game.Map.GameMap();
-                    map.Description = "desc";
-                    map.DisplayName = "dummy";
-                    map.TotalPlayers = 10;
-                    map.Name = "dummy";
-                    map.MapId = (int)GameMode.SummonersRift;
-                    map.MinCustomPlayers = 1;
-                    cfg.GameMap = map;
-                    cfg.MaxNumPlayers = 10;
-                    cfg.GameTypeConfig = 1;
-                    cfg.AllowSpectators = "NONE";
-                    cfg.GameMode = StringEnum.GetStringValue(GameMode.SummonersRift);
-                    await connection.CreatePracticeGame(cfg);
+                    CreatePracticeGame();
                 }
                 else
                 {
@@ -315,11 +300,20 @@ namespace LoLAutoQueue
                 watcher.EnableRaisingEvents = true;*/
                 if (loginPacket.AllSummonerData == null)
                 {
-                    LoLLauncher.RiotObjects.Platform.Summoner.AllSummonerData sumData = await connection.CreateDefaultSummoner(username);
+                    Random rnd = new Random();
+                    String summonerName = username;
+                    if (summonerName.Length > 16)
+                        summonerName = summonerName.Substring(0, 12) + new Random().Next(1000, 9999).ToString();
+                    LoLLauncher.RiotObjects.Platform.Summoner.AllSummonerData sumData = await connection.CreateDefaultSummoner(summonerName);
                     loginPacket.AllSummonerData = sumData;
                 }
                 updateStatus("Logged in on " + loginPacket.AllSummonerData.Summoner.Name);
                 updateStatus("Starting at lvl " + loginPacket.AllSummonerData.SummonerLevel.Level);
+                if (loginPacket.AllSummonerData.SummonerLevel.Level < 6 && queueType == QueueTypes.ARAM)
+                {
+                    updateStatus("Need to lvl up before ARAM. Defaulting to intro bots");
+                    queueType = QueueTypes.INTRO_BOT;
+                }
                 updateStatus("Starting with " + loginPacket.IpBalance + "ip");
                 LoLLauncher.RiotObjects.Platform.Matchmaking.GameQueueConfig[] availableQueues = await connection.GetAvailableQueues();
                 //LoLLauncher.RiotObjects.Platform.Summoner.Boost.SummonerActiveBoostsDTO boosts = await connection.GetSumonerActiveBoosts();
@@ -340,22 +334,7 @@ namespace LoLAutoQueue
                 {
                     if (queueType == QueueTypes.CUSTOM)
                     {
-                        updateStatus("Creating custom game");
-                        LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig cfg = new LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig();
-                        cfg.GameName = "funtime lol" + new Random().Next().ToString();
-                        LoLLauncher.RiotObjects.Platform.Game.Map.GameMap map = new LoLLauncher.RiotObjects.Platform.Game.Map.GameMap();
-                        map.Description = "desc";
-                        map.DisplayName = "dummy";
-                        map.TotalPlayers = 10;
-                        map.Name = "dummy";
-                        map.MapId = (int)GameMode.SummonersRift;
-                        map.MinCustomPlayers = 1;
-                        cfg.GameMap = map;
-                        cfg.MaxNumPlayers = 10;
-                        cfg.GameTypeConfig = 1;
-                        cfg.AllowSpectators = "NONE";
-                        cfg.GameMode = StringEnum.GetStringValue(GameMode.SummonersRift);
-                        await connection.CreatePracticeGame(cfg);
+                        CreatePracticeGame();
                     }
                     else
                     {
@@ -365,7 +344,25 @@ namespace LoLAutoQueue
                 }
             }).Start();
         }
-
+        async void CreatePracticeGame()
+        {
+            updateStatus("Creating custom game");
+            LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig cfg = new LoLLauncher.RiotObjects.Platform.Game.PracticeGameConfig();
+            cfg.GameName = "funtime lol" + new Random().Next().ToString();
+            LoLLauncher.RiotObjects.Platform.Game.Map.GameMap map = new LoLLauncher.RiotObjects.Platform.Game.Map.GameMap();
+            map.Description = "desc";
+            map.DisplayName = "dummy";
+            map.TotalPlayers = 10;
+            map.Name = "dummy";
+            map.MapId = (int)GameMode.SummonersRift;
+            map.MinCustomPlayers = 1;
+            cfg.GameMap = map;
+            cfg.MaxNumPlayers = 10;
+            cfg.GameTypeConfig = 1;
+            cfg.AllowSpectators = "NONE";
+            cfg.GameMode = StringEnum.GetStringValue(GameMode.SummonersRift);
+            await connection.CreatePracticeGame(cfg);
+        }
         void watcher_Created(object sender, FileSystemEventArgs e)
         {
             updateStatus("Game ended.");
